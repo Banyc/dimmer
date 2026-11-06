@@ -6,7 +6,7 @@ PartOf=graphical-session.target
 [Service]
 # initial level; the daemon saves whatever you set with `dimmer set/up/down`
 Environment=DIMMER_PERCENT=70
-ExecStart=/home/banyc/.local/share/dimmer/dimmer
+ExecStart=/home/banyc/.local/bin/dimmer
 Restart=always
 RestartSec=2
 

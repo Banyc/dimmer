@@ -42,7 +42,7 @@ mean pixel value becomes `(100 - level)%` of the unblended value. `0` is off,
 
 ```sh
 cargo build --release
-install -Dm755 target/release/dimmer ~/.local/share/dimmer/dimmer
+install -Dm755 target/release/dimmer ~/.local/bin/dimmer
 install -Dm644 contrib/dimmer.service ~/.config/systemd/user/dimmer.service
 systemctl --user daemon-reload
 systemctl --user enable --now dimmer.service
@@ -52,13 +52,19 @@ Optional global shortcuts: copy the two command-shortcut desktop files and let
 kglobalaccel register them.
 
 ```sh
-install -Dm644 contrib/net.local.dimmer-up.desktop   ~/.local/share/applications/net.local.dimmer-up.desktop
-install -Dm644 contrib/net.local.dimmer-down.desktop ~/.local/share/applications/net.local.dimmer-down.desktop
+install -Dm644 contrib/net.local.dimmer-less.desktop ~/.local/share/applications/net.local.dimmer-less.desktop
+install -Dm644 contrib/net.local.dimmer-more.desktop ~/.local/share/applications/net.local.dimmer-more.desktop
 busctl --user call org.kde.kglobalaccel /kglobalaccel org.kde.KGlobalAccel \
-  doRegister as 4 net.local.dimmer-up.desktop "$HOME/.local/share/dimmer/dimmer up 5" "" ""
+  doRegister as 4 net.local.dimmer-less.desktop "$HOME/.local/bin/dimmer up 5" "" ""
 busctl --user call org.kde.kglobalaccel /kglobalaccel org.kde.KGlobalAccel \
-  doRegister as 4 net.local.dimmer-down.desktop "$HOME/.local/share/dimmer/dimmer down 5" "" ""
+  doRegister as 4 net.local.dimmer-more.desktop "$HOME/.local/bin/dimmer down 5" "" ""
 ```
+
+The registered command *is* the action's friendly name, and an already-assigned
+shortcut stays bound to the command it was created with. Moving the binary
+therefore means registering under a fresh component id (`…-less2.desktop`) and
+re-assigning, not re-registering the same id — the old, keyless action would
+otherwise linger next to it.
 
 They appear in System Settings → Shortcuts → Command Shortcuts, where the keys
 can be assigned (Meta+Alt+Up / Meta+Alt+Down are a reasonable default).
@@ -68,7 +74,7 @@ code OR'd with the modifier bits, e.g. `Meta+Alt+Up` = `0x01000013 \| 0x10000000
 
 ```sh
 busctl --user call org.kde.kglobalaccel /kglobalaccel org.kde.KGlobalAccel \
-  setForeignShortcut asai 4 net.local.dimmer-up.desktop _launch "Dim less (overlay -5%)" \
+  setForeignShortcut asai 4 net.local.dimmer-less.desktop _launch "Dim less (overlay -5%)" \
   "Dim less (overlay -5%)" 1 419430419
 ```
 

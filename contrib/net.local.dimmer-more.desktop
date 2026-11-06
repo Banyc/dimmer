@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Dim more (overlay +5%)
-Exec=/home/banyc/.local/share/dimmer/dimmer down 5
+Exec=/home/banyc/.local/bin/dimmer down 5
 NoDisplay=true
 StartupNotify=false
 X-KDE-GlobalAccel-CommandShortcut=true
