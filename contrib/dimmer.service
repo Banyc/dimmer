@@ -1,0 +1,14 @@
+[Unit]
+Description=Software display dimmer (click-through black overlay)
+After=graphical-session.target plasma-workspace-wayland.target
+PartOf=graphical-session.target
+
+[Service]
+# initial level; the daemon saves whatever you set with `dimmer set/up/down`
+Environment=DIMMER_PERCENT=70
+ExecStart=/home/banyc/.local/share/dimmer/dimmer
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target
